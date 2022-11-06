@@ -18,19 +18,26 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$PolygonPointsState {
   List<Point<int>> get points => throw _privateConstructorUsedError;
   bool get isClosed => throw _privateConstructorUsedError;
+  bool get isTriangulate => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Point<int>> points, bool isClosed) points,
+    required TResult Function(
+            List<Point<int>> points, bool isClosed, bool isTriangulate)
+        points,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<Point<int>> points, bool isClosed)? points,
+    TResult? Function(
+            List<Point<int>> points, bool isClosed, bool isTriangulate)?
+        points,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Point<int>> points, bool isClosed)? points,
+    TResult Function(
+            List<Point<int>> points, bool isClosed, bool isTriangulate)?
+        points,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -62,7 +69,7 @@ abstract class $PolygonPointsStateCopyWith<$Res> {
           PolygonPointsState value, $Res Function(PolygonPointsState) then) =
       _$PolygonPointsStateCopyWithImpl<$Res, PolygonPointsState>;
   @useResult
-  $Res call({List<Point<int>> points, bool isClosed});
+  $Res call({List<Point<int>> points, bool isClosed, bool isTriangulate});
 }
 
 /// @nodoc
@@ -80,6 +87,7 @@ class _$PolygonPointsStateCopyWithImpl<$Res, $Val extends PolygonPointsState>
   $Res call({
     Object? points = null,
     Object? isClosed = null,
+    Object? isTriangulate = null,
   }) {
     return _then(_value.copyWith(
       points: null == points
@@ -89,6 +97,10 @@ class _$PolygonPointsStateCopyWithImpl<$Res, $Val extends PolygonPointsState>
       isClosed: null == isClosed
           ? _value.isClosed
           : isClosed // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTriangulate: null == isTriangulate
+          ? _value.isTriangulate
+          : isTriangulate // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -101,7 +113,7 @@ abstract class _$$_PointsCopyWith<$Res>
       __$$_PointsCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Point<int>> points, bool isClosed});
+  $Res call({List<Point<int>> points, bool isClosed, bool isTriangulate});
 }
 
 /// @nodoc
@@ -116,6 +128,7 @@ class __$$_PointsCopyWithImpl<$Res>
   $Res call({
     Object? points = null,
     Object? isClosed = null,
+    Object? isTriangulate = null,
   }) {
     return _then(_$_Points(
       points: null == points
@@ -126,6 +139,10 @@ class __$$_PointsCopyWithImpl<$Res>
           ? _value.isClosed
           : isClosed // ignore: cast_nullable_to_non_nullable
               as bool,
+      isTriangulate: null == isTriangulate
+          ? _value.isTriangulate
+          : isTriangulate // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -134,7 +151,9 @@ class __$$_PointsCopyWithImpl<$Res>
 
 class _$_Points implements _Points {
   const _$_Points(
-      {required final List<Point<int>> points, required this.isClosed})
+      {required final List<Point<int>> points,
+      required this.isClosed,
+      required this.isTriangulate})
       : _points = points;
 
   final List<Point<int>> _points;
@@ -146,10 +165,12 @@ class _$_Points implements _Points {
 
   @override
   final bool isClosed;
+  @override
+  final bool isTriangulate;
 
   @override
   String toString() {
-    return 'PolygonPointsState.points(points: $points, isClosed: $isClosed)';
+    return 'PolygonPointsState.points(points: $points, isClosed: $isClosed, isTriangulate: $isTriangulate)';
   }
 
   @override
@@ -159,12 +180,14 @@ class _$_Points implements _Points {
             other is _$_Points &&
             const DeepCollectionEquality().equals(other._points, _points) &&
             (identical(other.isClosed, isClosed) ||
-                other.isClosed == isClosed));
+                other.isClosed == isClosed) &&
+            (identical(other.isTriangulate, isTriangulate) ||
+                other.isTriangulate == isTriangulate));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_points), isClosed);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_points), isClosed, isTriangulate);
 
   @JsonKey(ignore: true)
   @override
@@ -175,27 +198,33 @@ class _$_Points implements _Points {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Point<int>> points, bool isClosed) points,
+    required TResult Function(
+            List<Point<int>> points, bool isClosed, bool isTriangulate)
+        points,
   }) {
-    return points(this.points, isClosed);
+    return points(this.points, isClosed, isTriangulate);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<Point<int>> points, bool isClosed)? points,
+    TResult? Function(
+            List<Point<int>> points, bool isClosed, bool isTriangulate)?
+        points,
   }) {
-    return points?.call(this.points, isClosed);
+    return points?.call(this.points, isClosed, isTriangulate);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Point<int>> points, bool isClosed)? points,
+    TResult Function(
+            List<Point<int>> points, bool isClosed, bool isTriangulate)?
+        points,
     required TResult orElse(),
   }) {
     if (points != null) {
-      return points(this.points, isClosed);
+      return points(this.points, isClosed, isTriangulate);
     }
     return orElse();
   }
@@ -232,12 +261,15 @@ class _$_Points implements _Points {
 abstract class _Points implements PolygonPointsState {
   const factory _Points(
       {required final List<Point<int>> points,
-      required final bool isClosed}) = _$_Points;
+      required final bool isClosed,
+      required final bool isTriangulate}) = _$_Points;
 
   @override
   List<Point<int>> get points;
   @override
   bool get isClosed;
+  @override
+  bool get isTriangulate;
   @override
   @JsonKey(ignore: true)
   _$$_PointsCopyWith<_$_Points> get copyWith =>

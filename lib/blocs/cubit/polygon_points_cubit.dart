@@ -11,6 +11,7 @@ class PolygonPointsCubit extends Cubit<PolygonPointsState> {
       : super(const PolygonPointsState.points(
           points: [],
           isClosed: false,
+          isTriangulate: false,
         ));
 
   void addPoint(Point<int> p) {
@@ -20,5 +21,17 @@ class PolygonPointsCubit extends Cubit<PolygonPointsState> {
 
   void closePolygon() {
     emit(state.copyWith(isClosed: !state.isClosed));
+  }
+
+  void triangulatePolygon() {
+    emit(state.copyWith(isTriangulate: true));
+  }
+
+  void clear() {
+    emit(const PolygonPointsState.points(
+      points: [],
+      isClosed: false,
+      isTriangulate: false,
+    ));
   }
 }

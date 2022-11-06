@@ -5,5 +5,6 @@ class PolygonPointsState with _$PolygonPointsState {
   const factory PolygonPointsState.points({
     required List<Point<int>> points,
     required bool isClosed,
+    required bool isTriangulate,
   }) = _Points;
 }

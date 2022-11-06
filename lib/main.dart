@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:monotone_polygon_triangulation/blocs/cubit/polygon_points_cubit.dart';
 import 'package:monotone_polygon_triangulation/extension/mapper.dart';
+import 'package:monotone_polygon_triangulation/triangulation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +38,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Point<int>? currentPoint;
 
+  double? currentDegs;
+
   final canvasSize = 500.0;
 
   @override
@@ -55,6 +58,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Text(currentPoint.toString()),
                     const SizedBox(height: 20),
+                    Text(currentDegs.toString()),
+                    const SizedBox(height: 20),
                     BlocBuilder<PolygonPointsCubit, PolygonPointsState>(
                       builder: (context, state) {
                         return TextButton(
@@ -68,6 +73,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         );
                       },
                     ),
+                    const SizedBox(height: 20),
+                    TextButton(
+                      onPressed:
+                          context.read<PolygonPointsCubit>().triangulatePolygon,
+                      child: const Text('Трианг-ть многоугольник'),
+                    ),
+                    Spacer(),
+                    TextButton(
+                      onPressed: _clearAll,
+                      child: const Text(
+                        'Сбросить',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 50),
                   ],
                 ),
               ),
@@ -93,6 +115,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             points: state.points,
                             isClosedPolygon: state.isClosed,
                           ),
+                          foregroundPainter: TriangulationPainter(
+                            points: state.points,
+                            isTriangulate: state.isTriangulate,
+                          ),
                         );
                       },
                     ),
@@ -106,14 +132,36 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _clearAll() {
+    context.read<PolygonPointsCubit>().clear();
+
+    setState(() {
+      currentPoint = null;
+      currentDegs = null;
+    });
+  }
+
   void _onTapUp(TapUpDetails tapUpDetails) {
     final localPos = tapUpDetails.localPosition;
     final point = localPos.toPoint();
 
+    context.read<PolygonPointsCubit>().addPoint(point);
+
     setState(() {
       currentPoint = point;
+      currentDegs = _countLastTriangle();
     });
-    context.read<PolygonPointsCubit>().addPoint(point);
+  }
+
+  double? _countLastTriangle() {
+    final points = context.read<PolygonPointsCubit>().state.points;
+    final l = points.length;
+    if (l > 2) {
+      final t = Triangle(points[l - 1], points[l - 2], points[l - 3]);
+      return t.getAngle();
+    }
+
+    return null;
   }
 }
 
@@ -160,5 +208,35 @@ class PolygonPainter extends CustomPainter {
     final lastOffset = points.last.toOffset();
 
     canvas.drawLine(firstOffset, lastOffset, painter);
+  }
+}
+
+class TriangulationPainter extends CustomPainter {
+  final List<Point<int>> points;
+  final bool isTriangulate;
+
+  TriangulationPainter({
+    required this.points,
+    required this.isTriangulate,
+  });
+
+  final painter = Paint()
+    ..color = Colors.black
+    ..strokeWidth = 2;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (isTriangulate) {
+      _triangulate();
+    }
+  }
+
+  @override
+  bool shouldRepaint(TriangulationPainter oldDelegate) {
+    return oldDelegate.points.length != points.length;
+  }
+
+  void _triangulate() {
+    Triangulation(points).triangulate();
   }
 }
