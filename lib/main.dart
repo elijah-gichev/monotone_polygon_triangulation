@@ -221,13 +221,17 @@ class TriangulationPainter extends CustomPainter {
   });
 
   final painter = Paint()
-    ..color = Colors.black
+    ..color = Colors.amber
     ..strokeWidth = 2;
 
   @override
   void paint(Canvas canvas, Size size) {
     if (isTriangulate) {
-      _triangulate();
+      final triangles = Triangulation(points).triangulate();
+
+      for (final t in triangles) {
+        _drawTriangle(canvas, t);
+      }
     }
   }
 
@@ -236,7 +240,9 @@ class TriangulationPainter extends CustomPainter {
     return oldDelegate.points.length != points.length;
   }
 
-  void _triangulate() {
-    Triangulation(points).triangulate();
+  void _drawTriangle(Canvas canvas, Triangle t) {
+    canvas.drawLine(t.a.toOffset(), t.b.toOffset(), painter);
+    canvas.drawLine(t.b.toOffset(), t.c.toOffset(), painter);
+    canvas.drawLine(t.c.toOffset(), t.a.toOffset(), painter);
   }
 }
